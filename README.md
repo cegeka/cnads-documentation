@@ -4,6 +4,10 @@ Container native application developments documentation
 This repository tries to document a few of the approaches we took during the Cloud Native Application Development Sandbox.
 During the sandbox we focused heavily on the AWS offering (which might not be the definition of cloud native the CNCF has).
 
+> ### Related repositories
+> * cnads-gitops-cluster: cluster configuration for fluxcd/flux
+> * cnads-gitops-namespace: fluxcd/flux config for a single namespace
+
 ## docs
 
 Documentation as recorded during the sandbox
