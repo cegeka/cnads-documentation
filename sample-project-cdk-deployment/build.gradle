@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.cegeka.cnads'
+version '0.1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    def cdkVersion = '1.24.0'
+
+    compile group: 'software.amazon.awscdk', name: 'core', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'ec2', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'ecs', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'ecs-patterns', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'rds', version: cdkVersion
+
+    compile group: 'software.amazon.awscdk', name: 'codecommit', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'codebuild', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'codepipeline-actions', version: cdkVersion
+    compile group: 'software.amazon.awscdk', name: 'eks', version: cdkVersion
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+application {
+    mainClassName = 'com.cegeka.cnads.cdk.CnadsPipelineApp'
+}
