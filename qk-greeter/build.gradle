@@ -1,0 +1,76 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "1.3.41"
+    id "org.jetbrains.kotlin.plugin.allopen" version "1.3.41"
+    id "org.jetbrains.kotlin.plugin.noarg" version "1.3.41"
+    id 'io.quarkus'
+}
+
+apply plugin: "kotlin-jpa"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.quarkus:quarkus-jdbc-postgresql'
+    implementation 'io.quarkus:quarkus-kotlin'
+    implementation 'io.quarkus:quarkus-amazon-lambda-http'
+    implementation 'io.quarkus:quarkus-hibernate-orm'
+
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+}
+
+group 'com.cegeka.cnads'
+version '1.0.0-SNAPSHOT'
+
+quarkus {
+    setOutputDirectory("$projectDir/build/classes/kotlin/main")
+}
+
+buildNative {
+    enableHttpUrlHandler = true
+    enableHttpsUrlHandler = true
+    enableAllSecurityServices = true
+}
+
+quarkusDev {
+    setSourceDir("$projectDir/src/main/kotlin")
+}
+
+allOpen {
+    annotation("javax.ws.rs.Path")
+    annotation("javax.enterprise.context.ApplicationScoped")
+    annotation("io.quarkus.test.junit.QuarkusTest")
+}
+
+task lambda(type: Zip) {
+    group = "quarkus"
+    dependsOn buildNative
+
+    from "$buildDir/greeter-1.0.0-SNAPSHOT-runner"
+    destinationDirectory = buildDir
+    archiveFileName = 'function.zip'
+    rename { "bootstrap" }
+    fileMode = 0755
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+    kotlinOptions.javaParameters = true
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8
+}
